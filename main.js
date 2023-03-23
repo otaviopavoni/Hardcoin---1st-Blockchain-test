@@ -118,6 +118,7 @@ if (userRequestedNewBlock == "y" || userRequestedNewBlock == "yes" || userReques
     CreateNewBlock();
 } else{
     console.log('Ok, you do not want to create a new block.');
+    return false;
 };
 
 const userRequestedBlockchain = prompt('Do you want to see the current blockchain? ');
