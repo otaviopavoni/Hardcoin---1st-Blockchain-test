@@ -21,41 +21,41 @@ class Block{
         this.data = data;
         this.previousHash = previousHash;
         this.hash = this.calculateHash();
-    }
+    };
 
     calculateHash(){
         return SHA256(this.index + this.previousHash + this.timestamp + JSON.stringify(this.data)).toString();
-    }
+    };
 
     mineBlock(difficulty){
         while(this.hash.substring(0, difficulty) !== Array(difficulty + 1).join("0")){
             this.hash = this.calculateHash();
-        }
+        };
 
         console.log("Block mined: " + this.hash);
-    }
-}
+    };
+};
 
 
 class Blockchain{
     constructor(){
         this.chain = [this.createGenesisBlock()];
-    }
+    };
 
     createGenesisBlock(){
         return new Block(0, currentDate.slice(0,11), "Genesis Block", "0");
-    }
+    };
 
     getLastestBlock(){
         return this.chain[this.chain.length - 1];
-    }
+    };
 
     addBlock(newBlock){
         newBlock.previousHash = this.getLastestBlock().hash;
         newBlock.hash = newBlock.calculateHash();
         this.chain.push(newBlock);
         BlockNumber +=1;
-    }
+    };
 
     isChainValid(){
         for(let i = 1; i < this.chain.length; i++){
@@ -64,16 +64,16 @@ class Blockchain{
 
             if(currentBlock.hash !== currentBlock.calculateHash()){
                 return false;
-            }
+            };
 
             if(currentBlock.previousHash !== previousBlock.hash){
                 return false;
-            }
-        }
+            };
+        };
 
         return true;
-    }
-}
+    };
+};
 
 
 
@@ -89,26 +89,27 @@ console.log('Is blockchain valid? ' + hardCoin.isChainValid() + '\n');
 
 // Tentendo modificar os dados da Blockchain - Trying to change Blockchain's info
 hardCoin.chain[1].data = { amount: 100 };
-
 console.log(JSON.stringify(hardCoin, null, 4,));
 console.log('Is blockchain valid? ' + hardCoin.isChainValid());
 
 */
 
+let HCamount = 0;
+
 function CreateNewBlock(){
-    let HCamount = prompt("How much Hardcoin would you like to transfer? ");
+    HCamount = prompt("How much Hardcoin would you like to transfer? ");
     hardCoin.addBlock(new Block(BlockNumber, currentDate.slice(0,11), { amount: HCamount }));
     console.log('Block generated!');
 };
 
 function CheckBlockchain(){
     console.log('This is the current blockchain:\n');
-    console.log(JSON.stringify(hardCoin, null, 4));
-    if(hardCoin.isChainValid == true){
+    console.log(JSON.stringify(hardCoin, null, 4,));
+    if(hardCoin.isChainValid() == true){
         console.log('The blockchain is valid!\n');
     } else{
         console.log('The blockchain is not valid!\n');
-    }
+    };
 
 };
 
@@ -121,5 +122,22 @@ if (userRequestedNewBlock == "y" || userRequestedNewBlock == "yes" || userReques
 
 const userRequestedBlockchain = prompt('Do you want to see the current blockchain? ');
 if (userRequestedBlockchain == "y" || userRequestedBlockchain == "yes" || userRequestedBlockchain == "yea" || userRequestedBlockchain == "yep" || userRequestedBlockchain == "ye"){
-    CheckBlockchain()
+    CheckBlockchain();
 };
+
+let changingLastTransactionAmount = 0;
+changingLastTransactionAmount = prompt("Now let's see our blockchain's safety: What amount of tokens would you like to be transfered in the last transaction? (it can be more or less, type numbers only) ");
+
+
+console.log("\nDone!");
+hardCoin.chain[3].data = { amount: changingLastTransactionAmount };
+
+let userRequestedNewBlockchain = prompt('Type "check" for checking the Blockchain authenticity ');
+while (userRequestedNewBlockchain !== "check"){
+    console.log('Typing error!\n');
+    userRequestedNewBlockchain = prompt('Type "check" for checking the Blockchain authenticity: ');
+};
+
+CheckBlockchain();
+
+console.log("\nAs you can see, the block you changed is not valid anymore. Thus, we can perceive how safe the Blockchains are.");
