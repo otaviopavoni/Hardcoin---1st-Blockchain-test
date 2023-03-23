@@ -83,7 +83,7 @@ hardCoin.addBlock(new Block(BlockNumber, currentDate.slice(0,11), { amount: 4 })
 hardCoin.addBlock(new Block(BlockNumber, currentDate.slice(0,11), { amount: 10 }));
 
 console.log(JSON.stringify(hardCoin, null, 4,));
-console.log('Is blockchain valid? ' + hardCoin.isChainValid());
+console.log('Is blockchain valid? ' + hardCoin.isChainValid() + '\n');
 
 /*
 
@@ -95,10 +95,31 @@ console.log('Is blockchain valid? ' + hardCoin.isChainValid());
 
 */
 
+function CreateNewBlock(){
+    let HCamount = prompt("How much Hardcoin would you like to transfer? ");
+    hardCoin.addBlock(new Block(BlockNumber, currentDate.slice(0,11), { amount: HCamount }));
+    console.log('Block generated!');
+};
+
+function CheckBlockchain(){
+    console.log('This is the current blockchain:\n');
+    console.log(JSON.stringify(hardCoin, null, 4));
+    if(hardCoin.isChainValid == true){
+        console.log('The blockchain is valid!\n');
+    } else{
+        console.log('The blockchain is not valid!\n');
+    }
+
+};
+
 const userRequestedNewBlock = prompt('Do you want to create a new block? ');
 if (userRequestedNewBlock == "y" || userRequestedNewBlock == "yes" || userRequestedNewBlock == "yea" || userRequestedNewBlock == "yep" || userRequestedNewBlock == "ye"){
-    hardCoin.addBlock(new Block(BlockNumber, currentDate.slice(0,11), { amount: 13.5}));
-    console.log(JSON.stringify(hardCoin, null, 4));
+    CreateNewBlock();
 } else{
     console.log('Ok, you do not want to create a new block.');
+};
+
+const userRequestedBlockchain = prompt('Do you want to see the current blockchain? ');
+if (userRequestedBlockchain == "y" || userRequestedBlockchain == "yes" || userRequestedBlockchain == "yea" || userRequestedBlockchain == "yep" || userRequestedBlockchain == "ye"){
+    CheckBlockchain()
 };
